@@ -6,6 +6,10 @@
 
 Aplicativo que lista e cadastra eventos. Os eventos contém Lugar, Nome e Data.
 
+## Updates
+- O aplicativo agora tem suporte a um banco de dados
+- O aplicativo confirma ao usuário se ele realmente quer excluir um item
+
 ## Feito Por:
 
 - [Leonardo Santos](https://github.com/SantosLeonard)
