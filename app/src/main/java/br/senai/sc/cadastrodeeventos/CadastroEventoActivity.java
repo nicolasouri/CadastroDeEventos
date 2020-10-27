@@ -6,18 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.time.LocalDate;
 
+import br.senai.sc.cadastrodeeventos.database.EventoDAO;
 import br.senai.sc.cadastrodeeventos.modelo.Evento;
 
 
 public class CadastroEventoActivity extends AppCompatActivity {
 
-    private final int RESULT_CODE_NOVO_EVENTO = 10;
-    private final int RESULT_CODE_EVENTO_ATUALIZADO = 20;
-
-    private boolean edicao = false;
     private int id = 0;
 
     @Override
@@ -41,7 +39,6 @@ public class CadastroEventoActivity extends AppCompatActivity {
             editTextNome.setText(evento.getNome());
             editTextLocal.setText(evento.getLocal());
             editTextData.setText(evento.getData());
-            edicao = true;
             id = evento.getId();
         }
     }
@@ -55,14 +52,13 @@ public class CadastroEventoActivity extends AppCompatActivity {
         String local = editTextLocal.getText().toString();
         String data = editTextData.getText().toString();
 
-        Evento produto = new Evento(id, nome, local, data);
-        Intent intent = new Intent();
-        if(edicao){
-            intent.putExtra("eventoEditado", produto);
-            setResult(RESULT_CODE_EVENTO_ATUALIZADO, intent);
+        Evento evento = new Evento(id, nome, local, data);
+        EventoDAO eventoDAO = new EventoDAO(getBaseContext());
+        boolean salvou = eventoDAO.salvar(evento);
+        if(salvou){
+            finish();
         }else{
-            intent.putExtra("novoEvento", produto);
-            setResult(RESULT_CODE_NOVO_EVENTO, intent);
+            Toast.makeText(CadastroEventoActivity.this, "Erro ao salvar", Toast.LENGTH_LONG).show();
         }
         finish();
     }
