@@ -5,26 +5,42 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
-
-import java.time.LocalDate;
 
 import br.senai.sc.cadastrodeeventos.database.EventoDAO;
 import br.senai.sc.cadastrodeeventos.modelo.Evento;
+import br.senai.sc.cadastrodeeventos.modelo.Local;
+import br.senai.sc.cadastrodeeventos.database.LocalDAO;
 
 
 public class CadastroEventoActivity extends AppCompatActivity {
 
     private int id = 0;
+    private Spinner spinnerLocais;
+    private ArrayAdapter<Local> locaisAdapter;
+    private EditText editTextNome, editTextData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro_evento);
         setTitle("Cadastro de Evento");
+        spinnerLocais = findViewById(R.id.spinner_locais);
 
+        editTextNome = findViewById(R.id.editText_nome);
+        editTextData = findViewById(R.id.editText_data);
+
+        carregarLocais();
         carregarEvento();
+    }
+
+    private void carregarLocais(){
+        LocalDAO localDAO = new LocalDAO(getBaseContext());
+        locaisAdapter = new ArrayAdapter<Local>(CadastroEventoActivity.this, android.R.layout.simple_spinner_item, localDAO.listar());
+        spinnerLocais.setAdapter(locaisAdapter);
     }
 
     public void carregarEvento(){
@@ -33,24 +49,28 @@ public class CadastroEventoActivity extends AppCompatActivity {
 
             Evento evento = (Evento) intent.getExtras().get("eventoEdicao");
 
-            EditText editTextNome = findViewById(R.id.editText_nome);
-            EditText editTextLocal = findViewById(R.id.editText_local);
-            EditText editTextData = findViewById(R.id.editText_data);
             editTextNome.setText(evento.getNome());
-            editTextLocal.setText(evento.getLocal());
             editTextData.setText(evento.getData());
+            int posicaoLocal = obterPosicaoLocal(evento.getLocal());
+            spinnerLocais.setSelection(posicaoLocal);
+
             id = evento.getId();
         }
     }
 
-    public void onClickSalvar(View v){
-        EditText editTextNome = findViewById(R.id.editText_nome);
-        EditText editTextLocal = findViewById(R.id.editText_local);
-        EditText editTextData = findViewById(R.id.editText_data);
+    private int obterPosicaoLocal(Local local){
+        for(int posicao = 0; posicao < locaisAdapter.getCount(); posicao++){
+            if(locaisAdapter.getItem(posicao).getId() == local.getId()){
+                return posicao;
+            }
+        }
+        return 0;
+    }
 
+    public void onClickSalvar(View v){
         String nome = editTextNome.getText().toString();
-        String local = editTextLocal.getText().toString();
         String data = editTextData.getText().toString();
+        Local local = (Local) spinnerLocais.getSelectedItem();
 
         Evento evento = new Evento(id, nome, local, data);
         EventoDAO eventoDAO = new EventoDAO(getBaseContext());

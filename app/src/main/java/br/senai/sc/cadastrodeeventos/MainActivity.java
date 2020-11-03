@@ -3,8 +3,6 @@ package br.senai.sc.cadastrodeeventos;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 //estaeregg
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -63,8 +61,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Evento evento = adapterEventos.getItem(position);
-                dialog(evento);
-                return true;
+                EventoDAO eventoDAO = new EventoDAO(getBaseContext());
+                eventoDAO.excluir(evento);
+                adapterEventos.remove(evento);
+                adapterEventos.notifyDataSetChanged();
+                Toast.makeText(MainActivity.this, "Evento Deletado", Toast.LENGTH_LONG).show();
+                return false;
             }
         });
     }
@@ -74,28 +76,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void dialog (final Evento evento){
-        // Use the Builder class for convenient dialog construction
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Excluir Item")
-                .setMessage("Você deseja Excluir o Item?")
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        EventoDAO eventoDAO = new EventoDAO(getBaseContext());
-                        eventoDAO.excluir(evento);
-                        adapterEventos.remove(evento);
-                        adapterEventos.notifyDataSetChanged();
-                        Toast.makeText(MainActivity.this, "Evento Deletado", Toast.LENGTH_LONG).show();
-
-                    }
-                })
-                .setNegativeButton("Não", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                });
-        builder.create().show();
+    public void onClickLocais(View v){
+        Intent intent = new Intent(MainActivity.this, ListarLocaisActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

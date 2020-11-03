@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".ListarLocaisActivity">
 
     <ListView
         android:longClickable="true"
@@ -17,13 +17,13 @@
         android:id="@+id/btn_cadastrar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClickNovoEvento"
-        android:text="Novo Evento" />
+        android:onClick="onClickNovoLocal"
+        android:text="Novo Local" />
 
     <Button
-        android:id="@+id/btn_local"
+        android:id="@+id/btn_eventos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="onClickLocais"
-        android:text="Locais" />
+        android:onClick="onClickEventos"
+        android:text="Eventos" />
 </LinearLayout>

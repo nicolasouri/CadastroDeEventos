@@ -9,6 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".CadastroLocalActivity" />
+        <activity android:name=".ListarLocaisActivity" />
         <activity android:name=".CadastroEventoActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

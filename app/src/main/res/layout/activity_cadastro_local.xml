@@ -5,47 +5,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".CadastroEventoActivity" >
+    tools:context=".CadastroLocalActivity" >
 
     <TextView
         android:id="@+id/textView_local"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nome do Evento"
+        android:text="Nome do Local"
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/editText_nome"
+        android:id="@+id/editText_nomeLocal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView_data"
+        android:id="@+id/textView_cidade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Data do Evento"
+        android:text="Cidade do Local"
         android:textSize="18sp" />
 
     <EditText
-        android:id="@+id/editText_data"
+        android:id="@+id/editText_cidade"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="date" />
+        android:inputType="textPersonName" />
 
     <TextView
-        android:id="@+id/textView_local"
+        android:id="@+id/textView_bairro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Local do Evento"
+        android:text="Bairro do Local"
         android:textSize="18sp" />
 
-    <Spinner
-        android:id="@+id/spinner_locais"
+    <EditText
+        android:id="@+id/editText_bairro"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textView_capacidadePublico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Maximo de pessoas"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editText_capacidadePublico"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number" />
 
     <LinearLayout
         android:layout_width="match_parent"
