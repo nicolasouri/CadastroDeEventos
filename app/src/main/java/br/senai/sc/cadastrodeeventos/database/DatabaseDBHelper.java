@@ -11,8 +11,8 @@ import br.senai.sc.cadastrodeeventos.database.contract.LocalContract;
 
 public class DatabaseDBHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "db.evento";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "db.evento v.2";
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseDBHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

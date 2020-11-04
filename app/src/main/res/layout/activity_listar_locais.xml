@@ -20,10 +20,4 @@
         android:onClick="onClickNovoLocal"
         android:text="Novo Local" />
 
-    <Button
-        android:id="@+id/btn_eventos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClickEventos"
-        android:text="Eventos" />
 </LinearLayout>

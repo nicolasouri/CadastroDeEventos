@@ -1,10 +1,14 @@
 package br.senai.sc.cadastrodeeventos;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 //estaeregg
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +28,22 @@ public class ListarLocaisActivity extends AppCompatActivity {
     private ListView listaLocais;
     private ArrayAdapter<Local> adapterLocais;
     private int id = 0;
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.evento:
+                onClickEventos();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,7 +98,7 @@ public class ListarLocaisActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void onClickEventos(View v){
+    public void onClickEventos(){
         Intent intent = new Intent(ListarLocaisActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
