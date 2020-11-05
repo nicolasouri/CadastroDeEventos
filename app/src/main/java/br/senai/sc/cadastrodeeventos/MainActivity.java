@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,7 +27,23 @@ public class MainActivity extends AppCompatActivity {
     private ListView listaEventos;
     private ArrayAdapter<Evento> adapterEventos;
     private int id = 0;
+    private EditText et_nome;
 
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        setTitle("Eventos");
+
+        et_nome = findViewById(R.id.et_nome_search);
+
+        listaEventos = findViewById(R.id.listView_evento);
+        listaEventos.setLongClickable(true);
+
+        definirOnClickListenerListView();
+        definirOnLongClickListenerListView();
+    }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -41,19 +58,6 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         return true;
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setTitle("Eventos");
-
-        listaEventos = findViewById(R.id.listView_evento);
-        listaEventos.setLongClickable(true);
-
-        definirOnClickListenerListView();
-        definirOnLongClickListenerListView();
     }
 
     @Override
@@ -89,6 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+    public void onClickPesquisar(View v){
+        EventoDAO eventoDAO = new EventoDAO((getBaseContext()));
+        String nome_search = et_nome.getText().toString();
+        adapterEventos = new ArrayAdapter<Evento>(MainActivity.this, android.R.layout.simple_list_item_1, eventoDAO.pesquisar(nome_search,"ASC",null));
+        listaEventos.setAdapter(adapterEventos);
     }
 
     public void onClickNovoEvento(View v){

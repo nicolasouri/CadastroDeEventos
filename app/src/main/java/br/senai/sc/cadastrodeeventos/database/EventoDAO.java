@@ -42,8 +42,35 @@ public class EventoDAO {
 
     }
 
+    public List<Evento> pesquisar(String nome_search, String ordem, String cidade_search){
+        List<Evento> eventos = new ArrayList<>();
+        String SQL_PESQUISAR;
+        if(cidade_search!=null){
+            SQL_PESQUISAR = SQL_LISTAR_TODOS + " WHERE evento.nome LIKE '%"+nome_search+"%' AND cidade = "+cidade_search+" ORDER BY evento.nome "+ordem;
+        }else {
+            SQL_PESQUISAR = SQL_LISTAR_TODOS + " WHERE evento.nome LIKE '%"+nome_search+"%' ORDER BY evento.nome "+ordem;
+        }
+        Cursor cursor = dbGateway.getDatabase().rawQuery(SQL_PESQUISAR,null);
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(cursor.getColumnIndex(EventoEntity._ID));
+            String nome = cursor.getString(cursor.getColumnIndex(EventoEntity.COLUMN_NAME_NOME));
+            String data = cursor.getString(cursor.getColumnIndex(EventoEntity.COLUMN_NAME_DATA));
+            int idLocal = cursor.getInt(cursor.getColumnIndex(EventoEntity.COLUMN_NAME_ID_LOCAL));
+
+            String nomeLocal = cursor.getString(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_NOME_LOCAL));
+            String bairro = cursor.getString(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_BAIRRO));
+            String cidade = cursor.getString(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CIDADE));
+            int capacidadePublico = cursor.getInt(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CAPACIDADE_PUBLICO));
+            Local local = new Local(idLocal, nomeLocal, bairro, cidade, capacidadePublico);
+
+            eventos.add(new Evento(id, nome, local, data));
+        }
+        cursor.close();
+        return  eventos;
+    }
+
     public List<Evento> listar(){
-        List<Evento> produtos = new ArrayList<>();
+        List<Evento> eventos = new ArrayList<>();
         Cursor cursor = dbGateway.getDatabase().rawQuery(SQL_LISTAR_TODOS, null);
         while (cursor.moveToNext()){
             int id = cursor.getInt(cursor.getColumnIndex(EventoEntity._ID));
@@ -57,10 +84,10 @@ public class EventoDAO {
             int capacidadePublico = cursor.getInt(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CAPACIDADE_PUBLICO));
             Local local = new Local(idLocal, nomeLocal, bairro, cidade, capacidadePublico);
 
-            produtos.add(new Evento(id, nome, local, data));
+            eventos.add(new Evento(id, nome, local, data));
         }
         cursor.close();
-        return produtos;
+        return eventos;
     }
 
     public void excluir(Evento evento){
