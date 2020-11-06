@@ -13,6 +13,8 @@ import br.senai.sc.cadastrodeeventos.modelo.Local;
 public class LocalDAO {
 
     private final String SQL_LISTAR_TODOS = "SELECT * FROM " + LocalEntity.TABLE_NAME;
+    private final String SQL_LISTAR_CIDADES = "SELECT cidade FROM " + LocalEntity.TABLE_NAME;
+
     private DBGateway dbGateway;
 
     public LocalDAO(Context context){
@@ -35,7 +37,16 @@ public class LocalDAO {
         }
 
     }
-
+    public List listarCidades(){
+        Cursor cursor = dbGateway.getDatabase().rawQuery(SQL_LISTAR_CIDADES,null);
+        List cidades = new ArrayList<>();
+        cidades.add("Selecione uma Cidade:");
+        while(cursor.moveToNext()){
+            String cidade = cursor.getString(cursor.getColumnIndex(LocalEntity.COLUMN_NAME_CIDADE));
+            cidades.add(cidade);
+        }
+        return cidades;
+    }
     public List<Local> listar(){
         List<Local> locais = new ArrayList<>();
         Cursor cursor = dbGateway.getDatabase().rawQuery(SQL_LISTAR_TODOS, null);

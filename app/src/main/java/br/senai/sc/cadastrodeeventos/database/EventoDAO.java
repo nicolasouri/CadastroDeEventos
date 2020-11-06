@@ -42,11 +42,12 @@ public class EventoDAO {
 
     }
 
+
     public List<Evento> pesquisar(String nome_search, String ordem, String cidade_search){
         List<Evento> eventos = new ArrayList<>();
         String SQL_PESQUISAR;
         if(cidade_search!=null){
-            SQL_PESQUISAR = SQL_LISTAR_TODOS + " WHERE evento.nome LIKE '%"+nome_search+"%' AND cidade = "+cidade_search+" ORDER BY evento.nome "+ordem;
+            SQL_PESQUISAR = SQL_LISTAR_TODOS + " WHERE evento.nome LIKE '%"+nome_search+"%' AND cidade = '"+cidade_search+"' ORDER BY evento.nome "+ordem;
         }else {
             SQL_PESQUISAR = SQL_LISTAR_TODOS + " WHERE evento.nome LIKE '%"+nome_search+"%' ORDER BY evento.nome "+ordem;
         }

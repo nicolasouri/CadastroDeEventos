@@ -14,12 +14,17 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.senai.sc.cadastrodeeventos.database.EventoDAO;
+import br.senai.sc.cadastrodeeventos.database.LocalDAO;
 import br.senai.sc.cadastrodeeventos.modelo.Evento;
+import br.senai.sc.cadastrodeeventos.modelo.Local;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,13 +33,18 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<Evento> adapterEventos;
     private int id = 0;
     private EditText et_nome;
-
+    private Spinner spinnerLocais;
+    private ArrayAdapter<Local> locaisAdapter;
+    private Switch btn_switch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle("Eventos");
+
+        btn_switch = findViewById(R.id.switch_btn);
+        spinnerLocais = findViewById(R.id.spinner_search);
 
         et_nome = findViewById(R.id.et_nome_search);
 
@@ -43,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         definirOnClickListenerListView();
         definirOnLongClickListenerListView();
+        carregarLocais();
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -68,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
         listaEventos.setAdapter(adapterEventos);
     }
 
+    private void carregarLocais(){
+        LocalDAO localDAO = new LocalDAO(getBaseContext());
+        locaisAdapter = new ArrayAdapter<Local>(MainActivity.this, android.R.layout.simple_spinner_item, localDAO.listarCidades());
+        spinnerLocais.setAdapter(locaisAdapter);
+    }
     private void definirOnClickListenerListView(){
         listaEventos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -97,7 +113,17 @@ public class MainActivity extends AppCompatActivity {
     public void onClickPesquisar(View v){
         EventoDAO eventoDAO = new EventoDAO((getBaseContext()));
         String nome_search = et_nome.getText().toString();
-        adapterEventos = new ArrayAdapter<Evento>(MainActivity.this, android.R.layout.simple_list_item_1, eventoDAO.pesquisar(nome_search,"ASC",null));
+        String ordem;
+        String cidade = spinnerLocais.getSelectedItem().toString();
+        if(cidade == "Selecione uma Cidade:"){
+            cidade = null;
+        }
+        if(btn_switch.isChecked()){
+            ordem = "ASC";
+        }else {
+            ordem = "DESC";
+        }
+        adapterEventos = new ArrayAdapter<Evento>(MainActivity.this, android.R.layout.simple_list_item_1, eventoDAO.pesquisar(nome_search,ordem,cidade));
         listaEventos.setAdapter(adapterEventos);
     }
 
